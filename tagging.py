@@ -8,20 +8,21 @@ import re
 import copy
 """
 의료노트를 regular expression rules 를 적용한 비식별 완료 형식으로 변환하는 코드
-Input 형식 : NOTE_ID / NOTE_TEXT 열이 존재하는 csv 파일
-Output 형식 : idx(=NOTE_ID) / origin / transformed 열이 존재하는 csv 파일
 기본적으로 ===[PHI: category]=== 형식으로 output을 내지만, -a 를 통해 asterisk(*) 형식으로 결과를 낼 수 있음
+Input 형식 : NOTE_ID / NOTE_TEXT 열이 존재하는 csv 파일
+Output 형식 : idx(=NOTE_ID)/origin/transformed 열이 존재하는 csv 파일
 """
 
 def load_notes(pd_data):
     """
     :param pd_data: input note
-    :return: idx(NOTE_ID) & note(NOTE_TEXT) set in the form of dictionary,
-    / return for processing(notes_raw) and saving(origins_raw)
+    :return: idx(NOTE_ID) & note(NOTE_TEXT) set in the form of dictionary, return for processing(notes_raw) and saving(origins_raw)
     """
+    pd_data.columns = map(str.lower, pd_data.columns) # lower for unifying the notation
     notes_raw = {}
+
     for i in range(len(pd_data)):
-        notes_raw[pd_data['NOTE_ID'][i]] = pd_data['NOTE_TEXT'][i]
+        notes_raw[pd_data['note_id'][i]] = pd_data['note_text'][i]
 
     origins_raw = copy.deepcopy(notes_raw)
 
@@ -31,8 +32,7 @@ def load_notes(pd_data):
 def load_regex(regex_path):
     """
     :param regex_path: path where the regular expression rules set is stored.
-    This path should contain sub-folders separated by each regular expression category
-    ex) regex/date, regex/name, ...
+    This path should contain sub-folders separated by each regular expression category ex) regex/date, regex/name, ...
     :return: Dict of {specific file name : the path of it}
     """
     regex_dir = {}
@@ -66,6 +66,11 @@ def find_span(note_dict, patterns):
 
 
 def tagging(notes_raw, regex_dir):
+    """
+    :param notes_raw: notes for tagging(original)
+    :param regex_dir: regex path for tagging
+    :return: de-identified notes
+    """
     patterns = []
 
     for key in regex_dir:
@@ -94,6 +99,12 @@ def tagging(notes_raw, regex_dir):
 
 
 def print_output(notes_tra, origins):
+    """
+    :param notes_tra: de-identified notes
+    :param origins: original notes which was deepcopied when running load_regex
+    :return: csv file with idx/origins/notes_tra form
+    """
+
     transformed = pd.DataFrame(columns=['idx', 'origin', 'transformed'])
     idx, tra, ori = [], [], []
 

@@ -1,0 +1,1 @@
+\S*(By|BY|by|from|From|FROM)(.)?\s[가-힣]{2,}\S*
