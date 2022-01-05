@@ -10,6 +10,7 @@ regular expression 파일이 수정되거나 삭제 시 적절한 결과가 나�
 import argparse
 import copy
 import re
+import os
 import pandas as pd
 
 
@@ -47,7 +48,15 @@ def main():
         for p in patterns:
             notes[k] = re.sub(p, formula.etc, notes[k])
 
-    return
+        notes[k] = pseudoLabeling(notes[k])
+        #BERT
+        if bert == 'BERT':
+            transformNER(save_origins[k].split(), notes[k])
+
+        #KoBERT
+        transformKoNER(save_origins[k].split(), notes[k]) #과도하게 띄어쓰기 되어있거나 \n되어있는 문서를 방지하기 위해 split()으로 처리한 뒤 보냄
+
+
 
 class Pattern():
     def __init__(self):
@@ -98,21 +107,27 @@ class Pattern():
     def date(self):
         patterns = [] # If the category has several patterns
         regex = 'regex/dates/'
-        if file.endswith('_transformed.txt'):
-            with open(regex + file, encoding='utf-8') as r:
-                patterns.append(re.compile(r.readline()))
+        file_list = os.listdir(regex)
+
+        for file in file_list:
+            if file.endswith('_transformed.txt'):
+                with open(regex + file, encoding='utf-8') as r:
+                    patterns.append(re.compile(r.readline()))
         return patterns
 
     def org(self):
         patterns = []
         regex = 'regex/organizations/'
-        if file.endswith('_transformed.txt'):
-            with open(regex + file, encoding='utf-8') as r:
-                patterns.append(re.compile(r.readline()))
+        file_list = os.listdir(regex)
+
+        for file in file_list:
+            if file.endswith('_transformed.txt'):
+                with open(regex + file, encoding='utf-8') as r:
+                    patterns.append(re.compile(r.readline()))
         return patterns
 
     def region(self):
-        regex = 'regex/district_kor_transformed.txt'
+        regex = 'regex/region/district_kor_transformed.txt'
         with open(regex, encoding='utf-8') as r:
             patterns = re.compile(r.readline())
         return patterns
@@ -126,9 +141,12 @@ class Pattern():
     def etc(self):
         patterns = []
         regex = 'regex/etc/'
-        if file.endswith('_transformed.txt'):
-            with open(regex + file, encoding='utf-8') as r:
-                patterns.append(re.compile(r.readline()))
+        file_list = os.listdir(regex)
+
+        for file in file_list:
+            if file.endswith('_transformed.txt'):
+                with open(regex + file, encoding='utf-8') as r:
+                    patterns.append(re.compile(r.readline()))
         return patterns
 
 
@@ -221,18 +239,57 @@ class Formula():
         return convertString
 
 
+def pseudoLabeling(transformedNote):
+    saved = []
+    for i in transformedNote.split():
+        if i in label:
+            saved.append(i)
+        else:
+            saved.append("'O'")
+    return saved
+
+def transformNER(origin, transformed):
+    """
+    List 형식 input
+    :param origin:
+    :param transformed:
+    :return:
+    """
+    if len(origin) != len(transformed):
+        print(f"The original and the transformed have different lengths : {origin}")
+        return None
+
+    if purpose == 'predict':
+        for i in range(len(origin)):
+            with open(f'data/labeled_{purpose}_{bert}.txt', 'a') as f:
+                f.write(origin[i] + '\n')
+    else:
+        for i in range(len(origin)):
+            with open(f'data/labeled_{purpose}_{bert}.txt', 'a') as f:
+                f.write(origin[i] + '\t' + transformed[i] + '\n')
+
+
+def transformKoNER(origin, transformed):
+    with open(f'data/labeled_{purpose}_{bert}.txt', 'a') as f:
+        f.write(' '.join(origin) + '\t' + ' '.join(transformed) + '\n')
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Select how to de-identify information')
     parser.add_argument('--input', '-i', default='data/tagging_input.csv')  # notes
     parser.add_argument('--regex', '-r', default='regex/')  # regular expression rules set
-    parser.add_argument('--output', '-o', default='data/pseudoLabeling_output.csv')  # path to save the results
+    #parser.add_argument('--output', '-o', default='data/pseudoLabeling_output.csv')  # path to save the results
+    parser.add_argument('--purpose', '-p', default='train')
+    parser.add_argument('--bert', '-b', default='KoBERT')
 
     args = parser.parse_args()
 
     inputNote = args.input
     regex = args.regex
-    output = args.output
+    #output = args.output
+    purpose = args.purpose
+    bert = args.bert
 
     dat = pd.read_csv(inputNote, encoding='utf-8')
     label = ["'PER-B'", "'PER-I'", "'DAT-B'", "'DAT-I'", "'ORG-B'",
