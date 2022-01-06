@@ -31,11 +31,16 @@ if bert=='BERT':
 ```
 - output 노트의 경로는 따로 설정해주지 않아도 되며, `data/labeled_{purpose}_{bert}.txt` 형식으로 자동 저장됩니다.
 
-## KoBERT-NER
+### KoBERT-NER
 - `model/*`
 - `KoBERT-NER_file/*`
 
-## `regex/*` 내 파일을 추가/수정/삭제하는 경우
+
+---
+<details>
+<summary>regex 파일을 추가/수정/삭제</summary>
+<div markdown="1">       
+
 ###일반적인 정규표현식을 추가하는 경우
 1.  기본적으로 regex/{Category} 항목으로 구성되어 있으며, {Category}를 기준으로 tagging 및 pseudo-labeling을 진행하므로 {Category} 내에 추가작업을 진행해야 합니다.
 2. 알맞은 디렉토리에 적절한 정규표현식 txt 파일 추가 `regex/{Category}/__.txt`
@@ -59,4 +64,9 @@ if bert=='BERT':
 ### 파일을 삭제하는 경우
 - `__transformed.txt` 파일이 없으면 인식되지 않습니다.
 - main() / class Pattern() / class Formula()를 수정해주어야 합니다.
+
+
+
+</div>
+</details>
 
