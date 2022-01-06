@@ -1,7 +1,7 @@
 # SNUBH_deid
 De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 
-## How to run
+## Usage
 
 ### Regular expression
 **정규표현식만 적용하고 싶은 경우**
