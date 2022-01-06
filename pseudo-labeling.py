@@ -15,6 +15,10 @@ import pandas as pd
 
 
 def main():
+
+    if os.path.exists(output):
+        os.remove(output)
+
     notes = {}
 
     for i in range(len(dat)):
@@ -49,12 +53,13 @@ def main():
             notes[k] = re.sub(p, formula.etc, notes[k])
 
         notes[k] = pseudoLabeling(notes[k])
-        #BERT
-        if bert == 'BERT':
-            transformNER(save_origins[k].split(), notes[k])
 
-        #KoBERT
-        transformKoNER(save_origins[k].split(), notes[k]) #과도하게 띄어쓰기 되어있거나 \n되어있는 문서를 방지하기 위해 split()으로 처리한 뒤 보냄
+        if bert == 'BERT':
+            # BERT
+            transformNER(save_origins[k].split(), notes[k])
+        else:
+            #KoBERT
+            transformKoNER(save_origins[k].split(), notes[k]) #과도하게 띄어쓰기 되어있거나 \n되어있는 문서를 방지하기 위해 split()으로 처리한 뒤 보냄
 
 
 
@@ -255,37 +260,34 @@ def transformNER(origin, transformed):
     :param transformed:
     :return:
     """
+    transformed = [x.strip("''") for x in transformed]
+
     if len(origin) != len(transformed):
         print(f"The original and the transformed have different lengths : {origin}")
         return None
 
-    if os.path.exists(output):
-        os.remove(output)
-
     if purpose == 'predict':
         for i in range(len(origin)):
-            with open(output, 'a') as f:
+            with open(output, 'a', encoding='utf-8') as f:
                 f.write(origin[i] + '\n')
     else:
         for i in range(len(origin)):
-            with open(output, 'a') as f:
+            with open(output, 'a', encoding='utf-8') as f:
                 f.write(origin[i] + '\t' + transformed[i] + '\n')
 
 
 def transformKoNER(origin, transformed):
+    transformed = [x.strip("''") for x in transformed]
 
     if len(origin) != len(transformed):
         print(f"The original and the transformed have different lengths : {origin}")
         return None
 
-    if os.path.exists(output):
-        os.remove(output)
-
     if purpose == 'predict':
-        with open(output, 'a') as f:
+        with open(output, 'a', encoding='utf-8') as f:
             f.write(' '.join(origin) + '\n')
     else:
-        with open(output, 'a') as f:
+        with open(output, 'a', encoding='utf-8') as f:
             f.write(' '.join(origin) + '\t' + ' '.join(transformed) + '\n')
 
 
