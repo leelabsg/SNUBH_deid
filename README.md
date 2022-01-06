@@ -4,7 +4,7 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 ## Usage
 
 ### Regular expression
-**정규표현식만 적용하고 싶은 경우**
+###### 정규표현식만 적용하고 싶은 경우
 
     python tagging.py
 - `-i` `--input` input 노트 데이터 경로를 입력하여야 하며, 노트는 (1) note_id (2) note_text 두 개의 column이 존재하는 파일 형식이어야 합니다.
@@ -12,7 +12,7 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 - `-r` `--regex` 정규표현식 표현들이 들어있는 폴더 경로를 설정합니다.
 - `-a` `--asterisk` 비식별 시, 해당 argument를 설정하면, 카테고리별로 표시하지 않고 한꺼번에 asterisk(*) 형식으로 지우게 됩니다. 
 ### Pseudo-labeling
-**BERT나 KoBERT에 적용되는 형식으로 만들고 싶은 경우**
+###### BERT나 KoBERT에 적용되는 형식으로 만들고 싶은 경우
 
     python pseudo-labeling.py
 - `-i` `--input` input 노트 데이터 경로를 입력하여야 하며, 노트는 (1) note_id (2) note_text 두 개의 column이 존재하는 파일 형식이어야 합니다.
@@ -32,13 +32,14 @@ if bert=='BERT':
 - output 노트의 경로는 따로 설정해주지 않아도 되며, `data/labeled_{purpose}_{bert}.txt` 형식으로 자동 저장됩니다.
 
 ### KoBERT-NER
-- `model/*`
-- `KoBERT-NER_file/*`
+    git clone https://github.com/monologg/KoBERT-NER 
+- `model` KoBERT-NER 내에 `model` 폴더를 새로 생성하여, 
+- `KoBERT-NER_file/*` KoBERT-NER을 받은 뒤 해당 폴더 내에 있는 `main.py` `trainer.py` 파일을 덮어쓰기 해 줍니다.
 
 
----
+## Tips
 <details>
-<summary>regex 파일을 추가/수정/삭제</summary>
+<summary>regex 파일을 추가/수정/삭제할 때</summary>
 <div markdown="1">       
 
 ### 일반적인 정규표현식을 추가하는 경우
