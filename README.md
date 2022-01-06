@@ -33,7 +33,8 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 
 ### KoBERT-NER
 1. KoBERT-NER을 local에 clone.
-    git clone https://github.com/monologg/KoBERT-NER 
+
+        git clone https://github.com/monologg/KoBERT-NER 
 2. KoBERT-NER 내에 `model` 폴더를 새로 생성한 뒤, `SNUBH_deid/model/` 내 모든 파일을 옮깁니다.
 3. KoBERT-NER 폴더 내에 있는 `main.py` `trainer.py` 파일을 `KoBERT-NER_file/*` 내의 파일로 덮어씁니다.
 4. pseudo-labeling.py의 결과로 나온 txt파일을 `KoBERT/data/` 내에 옮겨준 뒤 test file로 지정합니다.
