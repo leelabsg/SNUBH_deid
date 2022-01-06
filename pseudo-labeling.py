@@ -259,19 +259,34 @@ def transformNER(origin, transformed):
         print(f"The original and the transformed have different lengths : {origin}")
         return None
 
+    if os.path.exists(output):
+        os.remove(output)
+
     if purpose == 'predict':
         for i in range(len(origin)):
-            with open(f'data/labeled_{purpose}_{bert}.txt', 'a') as f:
+            with open(output, 'a') as f:
                 f.write(origin[i] + '\n')
     else:
         for i in range(len(origin)):
-            with open(f'data/labeled_{purpose}_{bert}.txt', 'a') as f:
+            with open(output, 'a') as f:
                 f.write(origin[i] + '\t' + transformed[i] + '\n')
 
 
 def transformKoNER(origin, transformed):
-    with open(f'data/labeled_{purpose}_{bert}.txt', 'a') as f:
-        f.write(' '.join(origin) + '\t' + ' '.join(transformed) + '\n')
+
+    if len(origin) != len(transformed):
+        print(f"The original and the transformed have different lengths : {origin}")
+        return None
+
+    if os.path.exists(output):
+        os.remove(output)
+
+    if purpose == 'predict':
+        with open(output, 'a') as f:
+            f.write(' '.join(origin) + '\n')
+    else:
+        with open(output, 'a') as f:
+            f.write(' '.join(origin) + '\t' + ' '.join(transformed) + '\n')
 
 
 if __name__ == '__main__':
@@ -290,6 +305,7 @@ if __name__ == '__main__':
     #output = args.output
     purpose = args.purpose
     bert = args.bert
+    output = f'data/labeled_{purpose}_{bert}.txt'
 
     dat = pd.read_csv(inputNote, encoding='utf-8')
     label = ["'PER-B'", "'PER-I'", "'DAT-B'", "'DAT-I'", "'ORG-B'",
