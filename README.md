@@ -41,7 +41,7 @@ if bert=='BERT':
 <summary>regex 파일을 추가/수정/삭제</summary>
 <div markdown="1">       
 
-###일반적인 정규표현식을 추가하는 경우
+### 일반적인 정규표현식을 추가하는 경우
 1.  기본적으로 regex/{Category} 항목으로 구성되어 있으며, {Category}를 기준으로 tagging 및 pseudo-labeling을 진행하므로 {Category} 내에 추가작업을 진행해야 합니다.
 2. 알맞은 디렉토리에 적절한 정규표현식 txt 파일 추가 `regex/{Category}/__.txt`
 3. `regex/transform_regex.txt`을 실행하여  `regex/{Category}/___transformed.txt` 파일이 추가될 수 있게 합니다.
