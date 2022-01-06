@@ -30,15 +30,20 @@ if bert=='BERT':
     확인  'O'
 ```
 - output 노트의 경로는 따로 설정해주지 않아도 되며, `data/labeled_{purpose}_{bert}.txt` 형식으로 자동 저장됩니다.
-### `regex/*` 내 파일을 추가/수정/삭제하는 경우
-###### 일반적인 정규표현식을 추가하는 경우
+
+## KoBERT-NER
+- `model/*`
+- `KoBERT-NER_file/*`
+
+## `regex/*` 내 파일을 추가/수정/삭제하는 경우
+###일반적인 정규표현식을 추가하는 경우
 1.  기본적으로 regex/{Category} 항목으로 구성되어 있으며, {Category}를 기준으로 tagging 및 pseudo-labeling을 진행하므로 {Category} 내에 추가작업을 진행해야 합니다.
 2. 알맞은 디렉토리에 적절한 정규표현식 txt 파일 추가 `regex/{Category}/__.txt`
 3. `regex/transform_regex.txt`을 실행하여  `regex/{Category}/___transformed.txt` 파일이 추가될 수 있게 합니다.
 4. class Pattern() / class Formula()를 수정해주어야 합니다.
     - {Category}를 완전히 추가한 경우, main() 함수에 반영되어야 합니다.
     
-###### Vocabulary를 추가하는 경우
+### Vocabulary를 추가하는 경우
 - Vocabulary란 `regex/transform_regex` 내의 `month_name`이나 `hos_kor`처럼 설정해주는 형식을 말합니다. 
 1. 새로운 변수를 추가하여 설정해준 후, `regex = regex.replace('"""+month_name+r"""', month_name)...` 열에 추가해 적용합니다.
 2. `regex/{Category}/__.txt` 파일 내부에는 설정한 변수를 넣어주고, `regex/transform_regex.txt`을 실행합니다.
@@ -46,15 +51,12 @@ if bert=='BERT':
 3. class Pattern() / class Formula()를 수정해주어야 합니다.
     - {Category}를 완전히 추가한 경우, main() 함수에 반영되어야 합니다.
     
-###### 파일을 수정하는 경우
+###파일을 수정하는 경우
 - 파일의 이름만 바꾸지 않으면 정상적으로 작동합니다.
 - 파일의 이름을 수정하는 경우,
   - class Pattern() / class Formula()를 수정해주어야 합니다.
     
-##### 파일을 삭제하는 경우
+### 파일을 삭제하는 경우
 - `__transformed.txt` 파일이 없으면 인식되지 않습니다.
 - main() / class Pattern() / class Formula()를 수정해주어야 합니다.
 
-### KoBERT-NER
-- `model/*`
-- `KoBERT-NER_file/*`
