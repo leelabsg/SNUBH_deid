@@ -19,23 +19,23 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 - `-r` `--regex` 정규표현식 표현들이 들어있는 폴더 경로를 설정합니다.
 - `-p` `--purpose` pseudo-labeling을 마친 노트가 어떤 목적으로 사용되는지 구별하기 위한 argument이며, 기본적으로 파일 이름 구별을 위해 아무 text나 적어도 되지만 `predict` 용도라면 label을 붙이지 않은 채 결과물을 return합니다.
 - `-b` `--bert` 일반적인 BERT 형식으로 할 것인지, KoBERT 형식으로 할 것인지 설정합니다. Default는 `KoBERT`이며, `BERT` 를 따로 설정해주면 아래 예시와 같은 형태로 return하게 됩니다.
-```buildoutcfg
-if bert=='KoBERT':
-    2016년 판독의 아무개 확인   'DAT-B' 'O' 'PER-B' 'O'
-
-if bert=='BERT':
-    2016년   'DAT-B'
-    판독의 'O'
-    아무개 'PER-B'
-    확인  'O'
-```
+    ```buildoutcfg
+    if bert=='KoBERT':
+        2016년 판독의 아무개 확인   'DAT-B' 'O' 'PER-B' 'O'
+    
+    if bert=='BERT':
+        2016년   'DAT-B'
+        판독의 'O'
+        아무개 'PER-B'
+        확인  'O'
+    ```
 - output 노트의 경로는 따로 설정해주지 않아도 되며, `data/labeled_{purpose}_{bert}.txt` 형식으로 자동 저장됩니다.
 
 ### KoBERT-NER
 1. KoBERT-NER을 local에 clone.
     git clone https://github.com/monologg/KoBERT-NER 
 2. KoBERT-NER 내에 `model` 폴더를 새로 생성한 뒤, `SNUBH_deid/model/` 내 모든 파일을 옮깁니다.
-3. KoBERT-NER을 받은 뒤 해당 폴더 내에 있는 `main.py` `trainer.py` 파일을 `KoBERT-NER_file/*` 내의 파일로 덮어쓰기 해 줍니다.
+3. KoBERT-NER 폴더 내에 있는 `main.py` `trainer.py` 파일을 `KoBERT-NER_file/*` 내의 파일로 덮어씁니다.
 4. pseudo-labeling.py의 결과로 나온 txt파일을 `KoBERT/data/` 내에 옮겨준 뒤 test file로 지정합니다.
 5. Run!
    
