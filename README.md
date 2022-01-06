@@ -62,7 +62,7 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 3. class Pattern() / class Formula()를 수정해주어야 합니다.
     - {Category}를 완전히 추가한 경우, main() 함수에 반영되어야 합니다.
     
-###파일을 수정하는 경우
+### 파일을 수정하는 경우
 - 파일의 이름만 바꾸지 않으면 정상적으로 작동합니다.
 - 파일의 이름을 수정하는 경우,
   - class Pattern() / class Formula()를 수정해주어야 합니다.
