@@ -32,10 +32,15 @@ if bert=='BERT':
 - output 노트의 경로는 따로 설정해주지 않아도 되며, `data/labeled_{purpose}_{bert}.txt` 형식으로 자동 저장됩니다.
 
 ### KoBERT-NER
+1. KoBERT-NER을 local에 clone.
     git clone https://github.com/monologg/KoBERT-NER 
-- `model` KoBERT-NER 내에 `model` 폴더를 새로 생성하여, 
-- `KoBERT-NER_file/*` KoBERT-NER을 받은 뒤 해당 폴더 내에 있는 `main.py` `trainer.py` 파일을 덮어쓰기 해 줍니다.
-
+2. KoBERT-NER 내에 `model` 폴더를 새로 생성한 뒤, `SNUBH_deid/model/` 내 모든 파일을 옮깁니다.
+3. KoBERT-NER을 받은 뒤 해당 폴더 내에 있는 `main.py` `trainer.py` 파일을 `KoBERT-NER_file/*` 내의 파일로 덮어쓰기 해 줍니다.
+4. pseudo-labeling.py의 결과로 나온 txt파일을 `KoBERT/data/` 내에 옮겨준 뒤 test file로 지정합니다.
+5. Run!
+   
+        python main.py --test_file 'labeld_train_KoBERT.txt' --do_eval --write_pred
+    - 해당 evaluation의 prediction 결과는 `preds/`, evaluation 결과는 `save_evals/` 폴더 내에 저장됩니다.
 
 ## Tips
 <details>
