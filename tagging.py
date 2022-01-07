@@ -133,7 +133,7 @@ if __name__ == '__main__':
     parser.add_argument('--input', '-i', default='data/tagging_input.csv')  # notes
     parser.add_argument('--regex', '-r', default='regex/')  # regular expression rules set
     parser.add_argument('--output', '-o', default='data/tagging_output.csv')  # path to save the results
-    parser.add_argument('--asterisk', '-a', default=False)
+    parser.add_argument('--asterisk', '-a', default=False) # If you want 판독의 : *** form, use 'True'
 
     args = parser.parse_args()
 

@@ -29,6 +29,10 @@ def main():
     formula = Formula()
 
     for k in notes.keys(): # Set order if want
+        """
+        Get patterns from Pattern() and apply it as Formula()
+        """
+        # 1개의 txt파일을 일일이 적용하는 경우
         notes[k] = re.sub(pattern.patient_name(), formula.patient_name, notes[k])
         notes[k] = re.sub(pattern.medical_staff_01(), formula.medical_staff_01, notes[k])
         notes[k] = re.sub(pattern.medical_staff_02(), formula.medical_staff_02, notes[k])
@@ -38,7 +42,7 @@ def main():
         notes[k] = re.sub(pattern.medical_staff_06(), formula.medical_staff_06, notes[k])
 
         patterns = pattern.date() # get several patterns from directory
-        for p in patterns:
+        for p in patterns: # 여러개의 txt파일을 한 번에 적용하는 경우
             notes[k] = re.sub(p, formula.date, notes[k])
 
         patterns = pattern.org()
@@ -59,7 +63,7 @@ def main():
             transformNER(save_origins[k].split(), notes[k])
         else:
             #KoBERT
-            transformKoNER(save_origins[k].split(), notes[k]) #과도하게 띄어쓰기 되어있거나 \n되어있는 문서를 방지하기 위해 split()으로 처리한 뒤 보냄
+            transformKoNER(save_origins[k].split(), notes[k]) # 과도하게 띄어쓰기 되어있거나 \n되어있는 문서를 방지하기 위해 split()으로 처리
 
 
 
@@ -245,6 +249,10 @@ class Formula():
 
 
 def pseudoLabeling(transformedNote):
+    """
+    :param transformedNote: 판독의 : PER-B 처럼 non-PHI는 labeled되지 않은 text를
+    :return: O O PER-B 로 변환하여 return
+    """
     saved = []
     for i in transformedNote.split():
         if i in label:
@@ -255,18 +263,17 @@ def pseudoLabeling(transformedNote):
 
 def transformNER(origin, transformed):
     """
-    List 형식 input
-    :param origin:
-    :param transformed:
-    :return:
+    word + '\t' + label 형식으로 만들기 위해 두 개의 param을 받아 txt 파일로 저장
+    :param origin: word 부분
+    :param transformed: label 부분
     """
-    transformed = [x.strip("''") for x in transformed]
+    transformed = [x.strip("''") for x in transformed] # strip '' in label list
 
     if len(origin) != len(transformed):
         print(f"The original and the transformed have different lengths : {origin}")
         return None
 
-    if purpose == 'predict':
+    if purpose == 'predict': # For prediction, no labels
         for i in range(len(origin)):
             with open(output, 'a', encoding='utf-8') as f:
                 f.write(origin[i] + '\n')
@@ -277,13 +284,18 @@ def transformNER(origin, transformed):
 
 
 def transformKoNER(origin, transformed):
-    transformed = [x.strip("''") for x in transformed]
+    """
+    word + '\t' + label 형식으로 만들기 위해 두 개의 param을 받아 txt 파일로 저장
+    :param origin: word 부분
+    :param transformed: label 부분
+    """
+    transformed = [x.strip("''") for x in transformed] # strip '' in label list
 
     if len(origin) != len(transformed):
         print(f"The original and the transformed have different lengths : {origin}")
         return None
 
-    if purpose == 'predict':
+    if purpose == 'predict': # For prediction, no labels
         with open(output, 'a', encoding='utf-8') as f:
             f.write(' '.join(origin) + '\n')
     else:
@@ -296,18 +308,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Select how to de-identify information')
     parser.add_argument('--input', '-i', default='data/tagging_input.csv')  # notes
     parser.add_argument('--regex', '-r', default='regex/')  # regular expression rules set
-    #parser.add_argument('--output', '-o', default='data/pseudoLabeling_output.csv')  # path to save the results
-    parser.add_argument('--purpose', '-p', default='train')
-    parser.add_argument('--bert', '-b', default='KoBERT')
+    parser.add_argument('--purpose', '-p', default='train') # If you want a text for prediction, use 'predict'
+    parser.add_argument('--bert', '-b', default='KoBERT') # If you want a common BERT form, use 'BERT'
 
     args = parser.parse_args()
 
     inputNote = args.input
     regex = args.regex
-    #output = args.output
     purpose = args.purpose
     bert = args.bert
-    output = f'data/labeled_{purpose}_{bert}.txt'
+    output = f'data/labeled_{purpose}_{bert}.txt' # Directory and the form of output text
 
     dat = pd.read_csv(inputNote, encoding='utf-8')
     label = ["'PER-B'", "'PER-I'", "'DAT-B'", "'DAT-I'", "'ORG-B'",
