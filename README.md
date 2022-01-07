@@ -46,6 +46,7 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
    
         python main.py --test_file {test_file} --do_eval --write_pred
     - 해당 evaluation의 prediction 결과는 `preds/`, evaluation 결과는 `save_evals/` 폴더 내에 저장됩니다.
+    - 별도의 training이나 prediction을 진행하고 싶다면 KoBERT-NER 내의 문서를 참고 바랍니다.
 
 ## Tips
 <details>
