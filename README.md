@@ -41,7 +41,7 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 4. pseudo-labeling.py의 결과로 나온 txt파일을 `KoBERT/data/` 내에 옮겨준 뒤 test file로 지정합니다.
 5. Run!
    
-        python main.py --test_file 'labeld_train_KoBERT.txt' --do_eval --write_pred
+        python main.py --test_file {test_file} --do_eval --write_pred
     - 해당 evaluation의 prediction 결과는 `preds/`, evaluation 결과는 `save_evals/` 폴더 내에 저장됩니다.
 
 ## Tips
