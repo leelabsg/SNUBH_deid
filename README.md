@@ -3,11 +3,12 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 
 ## Usage
 
+    git clone https://github.com/wimara28/SNUBH_deid.git
 ### Regular expression
 ###### 정규표현식만 적용하고 싶은 경우
 
     python tagging.py
-- `-i` `--input` input 노트 데이터 경로를 입력하여야 하며, 노트는 (1) note_id (2) note_text 두 개의 column이 존재하는 파일 형식이어야 합니다.
+- `-i` `--input` input 데이터 경로를 입력하여야 하며, 데이터는 **(1) note_id (2) note_text** 두 개의 column이 존재하는 파일 형식이어야 합니다.
 - `-o` `--output` 비식별화가 완료된 노트를 저장할 경로를 설정합니다.
 - `-r` `--regex` 정규표현식 표현들이 들어있는 폴더 경로를 설정합니다.
 - `-a` `--asterisk` 비식별 시, 해당 argument를 설정하면, 카테고리별로 표시하지 않고 한꺼번에 asterisk(*) 형식으로 지우게 됩니다. 
@@ -15,7 +16,7 @@ De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
 ###### BERT나 KoBERT에 적용되는 형식으로 만들고 싶은 경우
 
     python pseudo-labeling.py
-- `-i` `--input` input 노트 데이터 경로를 입력하여야 하며, 노트는 (1) note_id (2) note_text 두 개의 column이 존재하는 파일 형식이어야 합니다.
+- `-i` `--input` input 데이터 경로를 입력하여야 하며, 데이터는 **(1) note_id (2) note_text** 두 개의 column이 존재하는 파일 형식이어야 합니다.
 - `-r` `--regex` 정규표현식 표현들이 들어있는 폴더 경로를 설정합니다.
 - `-p` `--purpose` pseudo-labeling을 마친 노트가 어떤 목적으로 사용되는지 구별하기 위한 argument이며, 기본적으로 파일 이름 구별을 위해 아무 text나 적어도 되지만 `predict` 용도라면 label을 붙이지 않은 채 결과물을 return합니다.
 - `-b` `--bert` 일반적인 BERT 형식으로 할 것인지, KoBERT 형식으로 할 것인지 설정합니다. Default는 `KoBERT`이며, `BERT` 를 따로 설정해주면 아래 예시와 같은 형태로 return하게 됩니다.
