@@ -1,5 +1,8 @@
 # SNUBH_deid
 De-identifying PHI in clinical notes from Dept.Raiology, SNUBH
+- 분당서울대학교병원 영상의학과의 clinical note를 바탕으로 구축한 regular expression set
+- 해당 regular expression set으로 pseudo-labeling
+- Run KoBERT-NER with pseudo-labeled notes
 
 ## Usage
 
